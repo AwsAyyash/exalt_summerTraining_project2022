@@ -1,10 +1,10 @@
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
-from models.address import Address
+from models.chef import Chef
 
 
-class AddressSchema(SQLAlchemyAutoSchema):
+class ChefSchema(SQLAlchemyAutoSchema):
     class Meta:
-        model = Address
+        model = Chef
         include_fk = True
         load_instance = True

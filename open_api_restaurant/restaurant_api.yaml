@@ -1,0 +1,101 @@
+openapi: 3.0.0
+info:
+  title: restaurant manipulation APIs
+  version: 1.0.0
+paths:
+  /chef:
+    get:
+      summary: Returns the list of chefs.
+      operationId: restaurant_apis.chefs_api.get_chefs # the method (function) that handles this request in the API file
+      responses:
+        '200':
+          description: A JSON array of chefs names
+    post:
+      summary: Creates a chef.
+      operationId: restaurant_apis.chefs_api.post_chef
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/chef_info'
+      responses:
+        '200':
+          description: Created
+        '400':
+          description: Error
+  /chef/{employee_id}:
+    get:
+      summary: Returns a chef by ID.
+      operationId: restaurant_apis.chefs_api.get_chef
+      parameters:
+        - name: employee_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+    put:
+      summary: update the info of a specific chef.
+      operationId: restaurant_apis.chefs_api.put_chef
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/chef_info'
+      responses:
+        '200':
+          description: updated
+        '404':
+          description: Not Found
+    delete:
+      summary: delete a chef by ID.
+      operationId: restaurant_apis.chefs_api.delete_chef
+      parameters:
+        - name: employee_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+
+components:
+  schemas:
+    chef_info:
+      title: info. of the chef
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+        national_id:
+          type: string
+        daily_working_hours:
+          type: integer
+        hour_wage:
+            type: integer
+        experience:
+          type: integer
+
+      required:
+        - first_name
+        - last_name
+        - email
+        - national_id
+        - daily_working_hours
+        - hour_wage
+        - experience
