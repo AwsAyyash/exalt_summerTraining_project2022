@@ -3,15 +3,16 @@ import json as json
 from database.database import db
 from models.employee import Employee
 
-from models.item import Item
+import models.item
 
 
 class Chef(Employee):
+    __tablename__ = 'Chef'
     experience = db.Column(db.Integer, nullable=False)
 
-    items = db.relationship("Item", backref=db.backref('Chef', lazy=True), uselist=True, cascade='all,delete')
+    items = db.relationship("Item", backref=db.backref('Chef'))
 
-    def add_item(self, item: Item):
+    def add_item(self, item: models.item.Item):
         self.items.append(item)
 
     def toJSON(self):

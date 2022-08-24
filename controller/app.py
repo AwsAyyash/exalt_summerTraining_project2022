@@ -16,7 +16,7 @@ if __name__ == '__main__':
 
     change_pwd_to_current()
     connexion_app = connexion.FlaskApp(__name__, specification_dir='../open_api_restaurant')
-    # connexion_app.add_api('restaurant_api.yaml', validate_responses=True)
+    connexion_app.add_api('restaurant_api.yaml', validate_responses=True)
 
     app = connexion_app.app
 

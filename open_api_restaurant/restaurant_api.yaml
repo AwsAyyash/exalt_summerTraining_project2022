@@ -2,7 +2,10 @@ openapi: 3.0.0
 info:
   title: restaurant manipulation APIs
   version: 1.0.0
+  contact:
+    email: aws.ayyash.1@gmail.com
 paths:
+  # chefs
   /chef:
     get:
       summary: Returns the list of chefs.
@@ -70,6 +73,141 @@ paths:
         '404':
           description: Not Found
 
+  # customers
+  /customer:
+    get:
+      summary: Returns the list of customers.
+      operationId: restaurant_apis.customers_api.get_customers # the method (function) that handles this request in the API file
+      responses:
+        '200':
+          description: A JSON array of chefs names
+    post:
+      summary: Creates a chef.
+      operationId: restaurant_apis.customers_api.post_customer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/customer_info'
+      responses:
+        '200':
+          description: Created
+        '400':
+          description: Error
+  /customer/{customer_id}:
+    get:
+      summary: Returns a customer by ID.
+      operationId: restaurant_apis.customers_api.get_customer
+      parameters:
+        - name: customer_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+    put:
+      summary: update the info of a specific customer.
+      operationId: restaurant_apis.customers_api.put_customer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/customer_info'
+      responses:
+        '200':
+          description: updated
+        '404':
+          description: Not Found
+    delete:
+      summary: delete a customer by ID.
+      operationId: restaurant_apis.customers_api.delete_customer
+      parameters:
+        - name: customer_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+
+  # waiters
+  /waiter:
+    get:
+      summary: Returns the list of waiters.
+      operationId: restaurant_apis.waiters_api.get_waiters # the method (function) that handles this request in the API file
+      responses:
+        '200':
+          description: A JSON array of waiters data
+    post:
+      summary: Creates a waiter.
+      operationId: restaurant_apis.waiters_api.post_waiter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/waiter_info'
+      responses:
+        '200':
+          description: Created
+        '400':
+          description: Error
+  /waiter/{employee_id}:
+    get:
+      summary: Returns a waiter by ID.
+      operationId: restaurant_apis.waiters_api.get_waiter
+      parameters:
+        - name: employee_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+    put:
+      summary: update the info of a specific waiter.
+      operationId: restaurant_apis.waiters_api.put_waiter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/waiter_info'
+      responses:
+        '200':
+          description: updated
+        '404':
+          description: Not Found
+    delete:
+      summary: delete a waiter by ID.
+      operationId: restaurant_apis.waiters_api.delete_waiter
+      parameters:
+        - name: employee_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
 components:
   schemas:
     chef_info:
@@ -87,7 +225,7 @@ components:
         daily_working_hours:
           type: integer
         hour_wage:
-            type: integer
+          type: integer
         experience:
           type: integer
 
@@ -99,3 +237,45 @@ components:
         - daily_working_hours
         - hour_wage
         - experience
+
+    customer_info:
+      title: info. of the customer
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+        user_name:
+          type: string
+
+      required:
+        - first_name
+        - last_name
+        - email
+        - user_name
+    waiter_info:
+      title: info. of the waiter
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+        national_id:
+          type: string
+        daily_working_hours:
+          type: integer
+        hour_wage:
+          type: integer
+      required:
+        - first_name
+        - last_name
+        - email
+        - national_id
+        - daily_working_hours
+        - hour_wage
