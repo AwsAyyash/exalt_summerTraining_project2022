@@ -208,6 +208,144 @@ paths:
           description: OK
         '404':
           description: Not Found
+  # item
+  /item:
+    get:
+      summary: Returns the list of items.
+      operationId: restaurant_apis.items_api.get_items # the method (function) that handles this request in the API file
+      responses:
+        '200':
+          description: A JSON array of items data
+    post:
+      summary: Creates a item.
+      operationId: restaurant_apis.items_api.post_item
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/item_info'
+      responses:
+        '200':
+          description: Created
+        '400':
+          description: Error
+  /item/{item_id}:
+    get:
+      summary: Returns a item by ID.
+      operationId: restaurant_apis.items_api.get_item
+      parameters:
+        - name: item_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+    put:
+      summary: update the info of a specific item.
+      operationId: restaurant_apis.items_api.put_item
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/item_info'
+      responses:
+        '200':
+          description: updated
+        '404':
+          description: Not Found
+    delete:
+      summary: delete a item by ID.
+      operationId: restaurant_apis.items_api.delete_item
+      parameters:
+        - name: item_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+
+
+  # order
+  /order:
+    get:
+      summary: Returns the list of orders.
+      operationId: restaurant_apis.orders_api.get_orders # the method (function) that handles this request in the API file
+      responses:
+        '200':
+          description: A JSON array of orders data
+    post:
+      summary: Creates a order.
+      operationId: restaurant_apis.orders_api.post_order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order_info'
+      responses:
+        '200':
+          description: Created
+        '400':
+          description: Error
+  /order/{order_id}:
+    get:
+      summary: Returns an order by ID.
+      operationId: restaurant_apis.orders_api.get_order
+      parameters:
+        - name: order_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+    put:
+      summary: update the info of a specific order.
+      operationId: restaurant_apis.orders_api.put_order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order_info'
+      responses:
+        '200':
+          description: updated
+        '404':
+          description: Not Found
+    delete:
+      summary: delete a order by ID.
+      operationId: restaurant_apis.orders_api.delete_order
+      parameters:
+        - name: order_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+
+
 components:
   schemas:
     chef_info:
@@ -256,6 +394,7 @@ components:
         - last_name
         - email
         - user_name
+
     waiter_info:
       title: info. of the waiter
       type: object
@@ -279,3 +418,35 @@ components:
         - national_id
         - daily_working_hours
         - hour_wage
+
+    item_info:
+      title: info. of the items
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+          format: float
+      required:
+        - name
+        - description
+        - price
+    order_info:
+      title: info. of the items that an order has
+      type: object
+      properties:
+        items:
+          type: array
+          properties:
+            item_id:
+              type: integer
+              format: int64
+
+          required:
+            - item_id
+      required:
+        - items
+

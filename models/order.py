@@ -5,6 +5,7 @@ from sqlalchemy.sql import func
 
 import models
 # print("line35_Order class")
+from models.item import Item
 from models.waiter import Waiter
 from models.customer import Customer
 
@@ -31,7 +32,16 @@ class Order(db.Model):
                             backref=db.backref('Order', lazy=True), primaryjoin="Order.order_id == Item.orders"
                             )
 
-    print("line29_Order class")
+    def add_item(self, item: Item):
+        self.items.append(item)
+        self.cost = 0
+
+    def add_to_cost(self, amount_to_be_added: float):
+        self.cost += amount_to_be_added
+
+    def remove_items(self):
+        self.items = []
+
 
     def toJSON(self):
         return json.dumps(self, default=lambda o: o.__dict__,
