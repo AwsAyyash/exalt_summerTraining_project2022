@@ -12,3 +12,4 @@ class OrderSchema(SQLAlchemyAutoSchema):
         load_instance = True
 
     items = Nested(ItemSchema(only=('name', 'description', 'price')), many=True)
+
