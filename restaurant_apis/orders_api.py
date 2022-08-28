@@ -27,43 +27,23 @@ def post_order():
         Returns:
             Response: A json dict containing the orders.
         """
-    items_for_this_order_in_request_body = request.get_json(force=True)['items'] # is an array of items IDs
+    items_for_this_order_in_request_body = request.get_json(force=True)['items']  # is an array of items IDs
 
     order = Order()
     order.cost = 0.0
     db.session.add(order)
     db.session.commit()
 
-    #print(f'id orde ---- order.order_id==== {order.order_id}')
     order = Order.query.filter_by(order_id=order.order_id).first()
 
-    #items = []
-    #total_cost = 0.0
     for item_id in items_for_this_order_in_request_body:  # phone: is a dict
-        #with db.session.no_autoflush:
         item = Item.query.filter_by(item_id=item_id).first()
-     #   print(f'inside orders_api_L38: item= {item.name}')
         if item is not None:
             order.items.append(item)
             order.add_to_cost(float(item.price))
-        #total_cost += item.price
-        #order.add_item(item)
-        #order.add_to_cost(item.price)
-
-    #order = Order(items = items, cost= total_cost)
-    #db.session.add(order)
-    #print(f'order: inside orders_api: L46= {order.order_id},  {order.date_ordered}, {order.cost}, items= {order.items}')
 
     db.session.commit()
-    #print(f'order: inside orders_api: L49= {order.order_id},  {order.date_ordered}, {order.cost}, items= {order.items}')
 
-    print(f'-------------------------------')
-
-    #multy_many_from_db = db.session.query(item_in_order).all()
-
-    #print(f'multy_many_from_db={multy_many_from_db}')
-
-    #print(f'-------------------------------')
 
     return jsonify({"Order id": order.order_id}), 200
 
@@ -94,7 +74,7 @@ def put_order(order_id):
             Response: The order of the given order_id (None if it doesn't exist).
         """
 
-    items_for_this_order_in_request_body = request.get_json(force=True)['items'] # is an array of items IDs
+    items_for_this_order_in_request_body = request.get_json(force=True)['items']  # is an array of items IDs
 
     order = Order.query.filter_by(order_id=order_id).first()
     order.remove_items()

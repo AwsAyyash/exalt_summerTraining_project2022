@@ -1,5 +1,6 @@
 from flask import request, jsonify
 from database.database import db
+from models.order import Order
 
 from restaurant_apis.messages_response import deleted_msg, error_msg
 
@@ -94,3 +95,13 @@ def delete_waiter(employee_id):
         return jsonify(deleted_msg), 200
 
     return jsonify(error_msg), 404  # not found
+
+
+def post_for_waiter_prepare_order(employee_id):
+    order_id = int(request.data)
+    waiter = Waiter.query.filter_by(employee_id=employee_id).first()
+    order = Order.query.filter_by(order_id=order_id).first()
+    order.waiter_id = waiter.employee_id
+    waiter.add_order(order)
+    db.session.commit()
+    return 200

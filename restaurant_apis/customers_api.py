@@ -1,5 +1,7 @@
 from flask import request, jsonify
 from database.database import db
+from models.item import Item
+from models.order import Order
 
 from restaurant_apis.messages_response import deleted_msg, error_msg
 
@@ -93,4 +95,27 @@ def delete_customer(customer_id):
     return jsonify(error_msg), 404  # not found
 
 
+def post_order_by_customer(customer_id):  # /customer/{customer_id}/make_order:
+    """API for returning the order list as json.
+        Returns:
+            Response: A json dict containing the orders.
+        """
+    items_for_this_order_in_request_body = request.get_json(force=True)['items']  # is an array of items IDs
 
+    order = Order()
+    order.cost = 0.0
+    order.customer_id = customer_id
+    db.session.add(order)
+    db.session.commit()
+
+    order = Order.query.filter_by(order_id=order.order_id).first()
+
+    for item_id in items_for_this_order_in_request_body:  # phone: is a dict
+        item = Item.query.filter_by(item_id=item_id).first()
+        if item is not None:
+            order.items.append(item)
+            order.add_to_cost(float(item.price))
+
+    db.session.commit()
+
+    return jsonify({"Order id": order.order_id}), 200

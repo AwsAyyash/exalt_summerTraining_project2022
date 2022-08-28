@@ -6,7 +6,7 @@ info:
     email: aws.ayyash.1@gmail.com
 paths:
   # chefs
-  /chef:
+  /chefs:
     get:
       summary: Returns the list of chefs.
       operationId: restaurant_apis.chefs_api.get_chefs # the method (function) that handles this request in the API file
@@ -72,9 +72,30 @@ paths:
           description: OK
         '404':
           description: Not Found
-
+  /chef/{employee_id}/add_item: # adding {item_id} in the body
+    post:
+      summary: Returns a chef by ID.
+      operationId: restaurant_apis.chefs_api.post_item_to_chef
+      parameters:
+        - name: employee_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/item_id_posting'
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
   # customers
-  /customer:
+  /customers:
     get:
       summary: Returns the list of customers.
       operationId: restaurant_apis.customers_api.get_customers # the method (function) that handles this request in the API file
@@ -141,8 +162,30 @@ paths:
         '404':
           description: Not Found
 
+  /customer/{customer_id}/make_order:
+    post:
+      summary: Returns a customer by ID.
+      operationId: restaurant_apis.customers_api.post_order_by_customer
+      parameters:
+        - name: customer_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order_info'
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
   # waiters
-  /waiter:
+  /waiters:
     get:
       summary: Returns the list of waiters.
       operationId: restaurant_apis.waiters_api.get_waiters # the method (function) that handles this request in the API file
@@ -208,8 +251,31 @@ paths:
           description: OK
         '404':
           description: Not Found
+  /waiter/{employee_id}/add_order: # adding (attaching an order for him -the waiter-) # add the 'order_id' in the post body
+    post:
+      summary: Returns a waiter by ID.
+      operationId: restaurant_apis.waiters_api.post_for_waiter_prepare_order
+      parameters:
+        - name: employee_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/order_id_posting'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Error
+
   # item
-  /item:
+  /items:
     get:
       summary: Returns the list of items.
       operationId: restaurant_apis.items_api.get_items # the method (function) that handles this request in the API file
@@ -278,7 +344,7 @@ paths:
 
 
   # order
-  /order:
+  /orders:
     get:
       summary: Returns the list of orders.
       operationId: restaurant_apis.orders_api.get_orders # the method (function) that handles this request in the API file
@@ -450,3 +516,21 @@ components:
       required:
         - items
 
+    order_id_posting:
+      title: info. of the items
+      type: integer
+      properties:
+        order_id:
+          type: integer
+          format: int64
+      required:
+        - order_id
+    item_id_posting:
+      title: info. of the items
+      type: integer
+      properties:
+        item_id:
+          type: integer
+          format: int64
+      required:
+        - item_id

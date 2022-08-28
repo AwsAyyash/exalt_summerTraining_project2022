@@ -1,8 +1,8 @@
 from flask import request, jsonify
 from database.database import db
+from models.item import Item
 
 from restaurant_apis.messages_response import deleted_msg, error_msg
-
 
 from models.chef import Chef
 
@@ -19,6 +19,7 @@ def get_chefs():
 
     chef_schema = ChefSchema()
     result = chef_schema.dump(chefs_from_db, many=True)
+    print(f'result={type(result)}:{result}')
     return jsonify(result), 200
 
 
@@ -98,4 +99,15 @@ def delete_chef(employee_id):
     return jsonify(error_msg), 404  # not found
 
 
+def post_item_to_chef(employee_id):
+    item_id = int(request.data)
+    chef = Chef.query.filter_by(employee_id=employee_id).first()
+    item = Item.query.filter_by(item_id=item_id).first()
+    item.chef_id = chef.employee_id
+    chef.add_item(item)
+    db.session.commit()
+    return 200
 
+
+def add_item_to_chef(): # ask if needed
+    pass
