@@ -1,0 +1,18 @@
+services:
+  sqlite:
+    image: nouchka/sqlite3
+    #container_name: sqlite
+    ports:
+      - 27027:27027
+  project:
+    build: ./
+    #image: exalt22_proj:1.0
+    #container_name: project_version_1
+    ports:
+      - 5001:5001
+    #networks:
+     # - mynetwork
+    #depends_on:
+     # - sqlite
+#networks:
+ # mynetwork: { }

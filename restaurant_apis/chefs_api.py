@@ -19,7 +19,8 @@ def get_chefs():
 
     chef_schema = ChefSchema()
     result = chef_schema.dump(chefs_from_db, many=True)
-    print(f'result={type(result)}:{result}')
+
+    print(f'result_L23chefs_apis={type(result)}:{result}')
     return jsonify(result), 200
 
 
